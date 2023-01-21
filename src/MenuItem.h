@@ -29,6 +29,7 @@ public:
   static bool useJoyStick;
   static bool usePLUSEncoder;
   static bool useFACESEncoder;
+  static bool useUnitEncoder;
   static bool useLowClockDelay;
   static bool swapBtnBC;
 

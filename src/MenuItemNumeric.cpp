@@ -2,6 +2,7 @@
 #include <M5PLUSEncoder.h>
 #include <M5FACESEncoder.h>
 #include <M5JoyStick.h>
+#include <M5UnitEncoder.h>
 #include <Rect16.h>
 
 void MenuItemNumeric::onAfterDraw(){
@@ -81,6 +82,11 @@ void MenuItemNumeric::onEnter() {
         if (0 == (facesKey & 0x02) && value > minimum) { ++repeat; setValue(value - 1); }
         if ((0 == (facesPrev & 0x04)) && (0 != (facesKey & 0x04))) break;
       }
+    }
+    if (useUnitEncoder && UnitEncoder.update()) {
+      if (UnitEncoder.wasClicked() || UnitEncoder.wasHold()) break;
+      if (UnitEncoder.wasUp()  ) { setValue(value + 1); }
+      if (UnitEncoder.wasDown()) { setValue(value - 1); }
     }
     btnDrawer.draw();
 #endif

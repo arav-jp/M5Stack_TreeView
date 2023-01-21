@@ -2,8 +2,10 @@
 #include <M5PLUSEncoder.h>
 #include <M5FACESEncoder.h>
 #include <M5JoyStick.h>
+#include <M5UnitEncoder.h>
 #undef min
 #include <algorithm>
+
 
 void M5TreeView::begin() {
   for (uint16_t i = 0; i != Items.size(); ++i) {
@@ -138,6 +140,14 @@ M5TreeView::eCmd M5TreeView::checkInput() {
     }
     if (JoyStick.wasClicked()) { res = eCmd::ENTER; }
     if (JoyStick.wasHold())    { res = eCmd::BACK; }
+  }
+  if (res == eCmd::NONE
+   && useUnitEncoder && UnitEncoder.update()) {
+    if      (UnitEncoder.wasClicked())                       { res = eCmd::ENTER; }
+    else if (UnitEncoder.isPressed()&&UnitEncoder.wasUp())   { res = eCmd::ENTER; }
+    else if (UnitEncoder.isPressed()&&UnitEncoder.wasDown()) { res = eCmd::BACK;  }
+    else if (UnitEncoder.wasDown())                          { res = eCmd::PREV;  }
+    else if (UnitEncoder.wasUp())                            { res = eCmd::NEXT;  }
   }
 
   if (!press) {
