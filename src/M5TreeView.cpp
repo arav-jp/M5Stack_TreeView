@@ -142,12 +142,12 @@ M5TreeView::eCmd M5TreeView::checkInput() {
     if (JoyStick.wasHold())    { res = eCmd::BACK; }
   }
   if (res == eCmd::NONE
-   && useUnitEncoder && UnitEncoder.update()) {
-    if      (UnitEncoder.wasClicked())                       { res = eCmd::ENTER; }
-    else if (UnitEncoder.isPressed()&&UnitEncoder.wasUp())   { res = eCmd::ENTER; }
-    else if (UnitEncoder.isPressed()&&UnitEncoder.wasDown()) { res = eCmd::BACK;  }
-    else if (UnitEncoder.wasDown())                          { res = eCmd::PREV;  }
-    else if (UnitEncoder.wasUp())                            { res = eCmd::NEXT;  }
+   && useUnitEncoder && UnitEncoder.update() && UnitEncoder.lastUsed(200)) {
+    if      (UnitEncoder.wasClicked())                       { UnitEncoder.clearUsed(); res = eCmd::ENTER; }
+    else if (UnitEncoder.isPressed()&&UnitEncoder.wasUp())   { UnitEncoder.clearUsed(); res = eCmd::ENTER; }
+    else if (UnitEncoder.isPressed()&&UnitEncoder.wasDown()) { UnitEncoder.clearUsed(); res = eCmd::BACK;  }
+    else if (UnitEncoder.wasDown())                          { UnitEncoder.clearUsed(); res = eCmd::PREV;  }
+    else if (UnitEncoder.wasUp())                            { UnitEncoder.clearUsed(); res = eCmd::NEXT;  }
   }
 
   if (!press) {

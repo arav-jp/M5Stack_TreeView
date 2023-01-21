@@ -23,8 +23,11 @@ public:
   bool isReleased()  const { return !_press; }
   bool wasPressed()  const { return !_oldPress && _press; }
   bool wasReleased() const { return _oldPress && !_press; }
-  bool pressedFor(uint32_t ms)  const { return (_press  && _time - _lastChange >= ms); }
-  bool releasedFor(uint32_t ms) const { return (!_press && _time - _lastChange >= ms); }
+  bool pressedFor(uint32_t ms)  const { return (_press  && _time - _lastChangeButton >= ms); }
+  bool releasedFor(uint32_t ms) const { return (!_press && _time - _lastChangeButton >= ms); }
+  bool rotatedFor(uint32_t ms)  const { return (_time - _lastChangeEncoder >= ms); }
+  bool lastUsed(uint32_t ms)  const { return (_time - _lastUsed >= ms); }
+  void clearUsed() { _lastUsed=_time; }
 
   void setLEDColor(uint8_t index, uint32_t color);
 
@@ -45,7 +48,9 @@ private:
   uint8_t _press = 0;     // 0:release  1:click  2:holding
   uint8_t _oldPress = 0;
   uint32_t _time = 0;
-  uint32_t _lastChange = 0;
+  uint32_t _lastChangeButton = 0;
+  uint32_t _lastChangeEncoder = 0;
+  uint32_t _lastUsed = 0;
 };
 
 #endif

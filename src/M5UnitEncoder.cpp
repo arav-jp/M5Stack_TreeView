@@ -55,21 +55,24 @@ void M5UnitEncoder::setLEDColor(uint8_t index, uint32_t color) {
 
 bool M5UnitEncoder::update()
 {
+  if (_raw_z1 != _raw) {
+    _lastChangeEncoder = _time;
+  }
+  if (_button != (0 != _oldPress)) {
+    _lastChangeButton = _time;
+  }
+  _time = millis();
+
   _oldUpDown = _upDown;
   _oldPress = _press;
   _raw_z1 = _raw;
-
-  _time = millis();
   _raw = getEncoderValue();
   _button = !getButtonStatus();
 
-  if (_button != (0 != _oldPress)) {
-    _lastChange = _time;
-  }
   if (_button) {
     if (!_oldPress) {
       _press = 1;
-    } else if (1 == _oldPress && (_time - _lastChange >= msecHold)) {
+    } else if (1 == _oldPress && (_time - _lastChangeButton >= msecHold)) {
       _press = 2;
     }
   } else {
