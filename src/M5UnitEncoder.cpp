@@ -83,19 +83,5 @@ bool M5UnitEncoder::update()
   } else {
     _upDown = 0;
   }
-
-  if (_raw_z1 != _raw) {
-    if (_raw_z1 > _raw) {
-      setLEDColor(1, 0x000011);
-    } else {
-      setLEDColor(2, 0x111100);
-    }
-  } else {
-    setLEDColor(0, 0x001100);
-  }
-  if (!_button) {
-    setLEDColor(0, 0xC800FF);
-  }
-
   return true;
 }
